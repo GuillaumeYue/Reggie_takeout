@@ -1,0 +1,25 @@
+package com.finalPrj.reggie.common;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+
+/**
+ * 全局异常处理
+ */
+@RestControllerAdvice(annotations = {RestController.class, Controller.class})
+@Slf4j
+public class GlobalExceptionHandler {
+    /**
+     * 异常处理方法
+     * @return
+     */
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public R<String> exceptionHandler(SQLIntegrityConstraintViolationException ex){
+        log.error(ex.getMessage());
+        return R.error("Failed");
+    }
+}
