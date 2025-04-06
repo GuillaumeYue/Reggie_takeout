@@ -7,5 +7,5 @@ import com.finalPrj.reggie.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
+public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper,Employee> implements EmployeeService{
 }

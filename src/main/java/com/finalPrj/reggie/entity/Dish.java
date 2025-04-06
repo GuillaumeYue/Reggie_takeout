@@ -17,7 +17,6 @@ public class Dish implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
 
@@ -67,9 +66,5 @@ public class Dish implements Serializable {
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
-
-
-    //是否删除
-    private Integer isDeleted;
 
 }

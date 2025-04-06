@@ -1,18 +1,21 @@
 package com.finalPrj.reggie.common;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * 全局异常处理
  */
-@RestControllerAdvice(annotations = {RestController.class, Controller.class})
+@ControllerAdvice(annotations = {RestController.class, Controller.class})
+@ResponseBody
 @Slf4j
 public class GlobalExceptionHandler {
+
     /**
      * 异常处理方法
      * @return
@@ -21,17 +24,17 @@ public class GlobalExceptionHandler {
     public R<String> exceptionHandler(SQLIntegrityConstraintViolationException ex){
         log.error(ex.getMessage());
 
-        if (ex.getMessage().contains("Duplicate entry")) {
+        if(ex.getMessage().contains("Duplicate entry")){
             String[] split = ex.getMessage().split(" ");
-            String msg = split[2] + "Already Exists";
+            String msg = split[2] + "已存在";
             return R.error(msg);
         }
 
-        return R.error("Unknown Error");
+        return R.error("未知错误");
     }
 
     /**
-     * 自定义业务异常处理方法
+     * 异常处理方法
      * @return
      */
     @ExceptionHandler(CustomException.class)
@@ -40,4 +43,5 @@ public class GlobalExceptionHandler {
 
         return R.error(ex.getMessage());
     }
+
 }
