@@ -1,6 +1,7 @@
 package com.finalPrj.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.finalPrj.reggie.common.R;
 import com.finalPrj.reggie.dto.SetmealDto;
@@ -109,6 +110,18 @@ public class SetmealController {
         return R.success("套餐数据删除成功");
     }
 
+    @PostMapping("/status/{status}")
+    public R<String> updateStatus(@PathVariable int status, @RequestParam List<Long> ids) {
+        LambdaUpdateWrapper<Setmeal> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.in(Setmeal::getId, ids);
+        updateWrapper.set(Setmeal::getStatus, status);
+
+        setmealService.update(updateWrapper);
+
+        return R.success("套餐状态修改成功");
+    }
+
+
     @GetMapping("/list")
     public R<List<Setmeal>> list(Setmeal setmeal) {
         log.info("setmeal:{}", setmeal);
@@ -121,4 +134,18 @@ public class SetmealController {
 
         return R.success(setmealService.list(queryWrapper));
     }
+
+    @GetMapping("/{id}")
+    public R<SetmealDto> getById(@PathVariable Long id) {
+        SetmealDto setmealDto = setmealService.getByIdWithDish(id);
+        return R.success(setmealDto);
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody SetmealDto setmealDto) {
+        setmealService.updateWithDish(setmealDto);
+        return R.success("修改套餐成功");
+    }
+
+
 }
