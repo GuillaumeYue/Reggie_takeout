@@ -46,7 +46,7 @@ public class DishController {
 
         dishService.saveWithFlavor(dishDto);
 
-        return R.success("新增菜品成功");
+        return R.success("Add Dish Success");
     }
 
     /**
@@ -123,7 +123,7 @@ public class DishController {
 
         dishService.updateWithFlavor(dishDto);
 
-        return R.success("修改菜品成功");
+        return R.success("Update Dish Success");
     }
 
     /**
