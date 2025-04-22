@@ -63,7 +63,7 @@ public class AddressBookController {
         if (addressBook != null) {
             return R.success(addressBook);
         } else {
-            return R.error("The object was not found");
+            return R.error("没有找到该对象");
         }
     }
 
@@ -80,7 +80,7 @@ public class AddressBookController {
         AddressBook addressBook = addressBookService.getOne(queryWrapper);
 
         if (null == addressBook) {
-            return R.error("The object was not found");
+            return R.error("没有找到该对象");
         } else {
             return R.success(addressBook);
         }

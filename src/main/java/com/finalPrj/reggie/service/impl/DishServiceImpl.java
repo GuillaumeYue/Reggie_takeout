@@ -2,6 +2,7 @@ package com.finalPrj.reggie.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.finalPrj.reggie.common.CustomException;
 import com.finalPrj.reggie.dto.DishDto;
 import com.finalPrj.reggie.entity.Dish;
 import com.finalPrj.reggie.entity.DishFlavor;
@@ -91,4 +92,51 @@ public class DishServiceImpl extends ServiceImpl<DishMapper,Dish> implements Dis
 
         dishFlavorService.saveBatch(flavors);
     }
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    @Override
+    public void removeWithFlavor(List<Long> ids) {
+        // 查询是否有启售中的菜品，不能删
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Dish::getId, ids).eq(Dish::getStatus, 1);
+
+        int count = this.count(queryWrapper);
+        if (count > 0) {
+            throw new CustomException("选中菜品中有启售状态，不能删除");
+        }
+
+        // 1. 删除 dish 表中的数据
+        this.removeByIds(ids);
+
+        // 2. 删除 dish_flavor 表中相关数据
+        LambdaQueryWrapper<DishFlavor> flavorWrapper = new LambdaQueryWrapper<>();
+        flavorWrapper.in(DishFlavor::getDishId, ids);
+        dishFlavorService.remove(flavorWrapper);
+    }
+
+    /**
+     * 批量启售/停售
+     * @param status
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void updateStatusBatch(int status, List<Long> ids) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(Dish::getId, ids);
+
+        List<Dish> dishes = this.list(queryWrapper);
+
+        for (Dish dish : dishes) {
+            dish.setStatus(status); // 修改状态
+        }
+
+        this.updateBatchById(dishes);
+    }
+
+
+
 }

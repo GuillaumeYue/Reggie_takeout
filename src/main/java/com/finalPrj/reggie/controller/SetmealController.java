@@ -1,7 +1,6 @@
 package com.finalPrj.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.finalPrj.reggie.common.R;
 import com.finalPrj.reggie.dto.SetmealDto;
@@ -110,41 +109,69 @@ public class SetmealController {
         return R.success("套餐数据删除成功");
     }
 
-    @PostMapping("/status/{status}")
-    public R<String> updateStatus(@PathVariable int status, @RequestParam List<Long> ids) {
-        LambdaUpdateWrapper<Setmeal> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.in(Setmeal::getId, ids);
-        updateWrapper.set(Setmeal::getStatus, status);
-
-        setmealService.update(updateWrapper);
-
-        return R.success("套餐状态修改成功");
-    }
-
-
+    /**
+     * 根据条件查询套餐数据
+     * @param setmeal
+     * @return
+     */
     @GetMapping("/list")
-    public R<List<Setmeal>> list(Setmeal setmeal) {
-        log.info("setmeal:{}", setmeal);
-        //条件构造器
+    public R<List<Setmeal>> list(Setmeal setmeal){
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotEmpty(setmeal.getName()), Setmeal::getName, setmeal.getName());
-        queryWrapper.eq(null != setmeal.getCategoryId(), Setmeal::getCategoryId, setmeal.getCategoryId());
-        queryWrapper.eq(null != setmeal.getStatus(), Setmeal::getStatus, setmeal.getStatus());
+        queryWrapper.eq(setmeal.getCategoryId() != null,Setmeal::getCategoryId,setmeal.getCategoryId());
+        queryWrapper.eq(setmeal.getStatus() != null,Setmeal::getStatus,setmeal.getStatus());
         queryWrapper.orderByDesc(Setmeal::getUpdateTime);
 
-        return R.success(setmealService.list(queryWrapper));
+        List<Setmeal> list = setmealService.list(queryWrapper);
+
+        return R.success(list);
     }
 
+    /**
+     * 修改套餐
+     * @param setmealDto
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody SetmealDto setmealDto){
+        log.info("修改套餐：{}", setmealDto);
+        setmealService.updateWithDish(setmealDto);
+        return R.success("套餐修改成功");
+    }
+
+    /**
+     * 回显套餐详情
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
-    public R<SetmealDto> getById(@PathVariable Long id) {
+    public R<SetmealDto> getById(@PathVariable Long id){
         SetmealDto setmealDto = setmealService.getByIdWithDish(id);
         return R.success(setmealDto);
     }
 
-    @PutMapping
-    public R<String> update(@RequestBody SetmealDto setmealDto) {
-        setmealService.updateWithDish(setmealDto);
-        return R.success("修改套餐成功");
+    /**
+     * 批量修改套餐启售/停售状态
+     * @param status 目标状态（1：启售，0：停售）
+     * @param ids 套餐ID列表
+     * @return 操作结果
+     */
+    @PostMapping("/status/{status}")
+    public R<String> updateStatus(@PathVariable int status, @RequestParam List<Long> ids) {
+        log.info("批量更新套餐状态，状态：{}，ids：{}", status, ids);
+        setmealService.updateSetmealStatus(status, ids);
+        return R.success("套餐状态更新成功");
+    }
+
+    /**
+     * 批量删除套餐
+     * @param ids 套餐ID列表
+     * @return 删除结果
+     */
+    @DeleteMapping("/batch")
+    public R<String> batchDelete(@RequestParam List<Long> ids) {
+        log.info("批量删除套餐，ids：{}", ids);
+        setmealService.removeWithDish(ids);
+        return R.success("批量删除套餐成功");
     }
 
 

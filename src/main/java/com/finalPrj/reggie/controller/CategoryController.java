@@ -31,7 +31,7 @@ public class CategoryController {
     public R<String> save(@RequestBody Category category){
         log.info("category:{}",category);
         categoryService.save(category);
-        return R.success("Add Category success");
+        return R.success("新增分类成功");
     }
 
     /**
@@ -61,12 +61,12 @@ public class CategoryController {
      */
     @DeleteMapping
     public R<String> delete(Long id){
-        log.info("Delete Category，id：{}",id);
+        log.info("删除分类，id为：{}",id);
 
         //categoryService.removeById(id);
         categoryService.remove(id);
 
-        return R.success("Category deleted success");
+        return R.success("分类信息删除成功");
     }
 
     /**
@@ -76,11 +76,11 @@ public class CategoryController {
      */
     @PutMapping
     public R<String> update(@RequestBody Category category){
-        log.info("Update Category：{}",category);
+        log.info("修改分类信息：{}",category);
 
         categoryService.updateById(category);
 
-        return R.success("Update Category success");
+        return R.success("修改分类信息成功");
     }
 
     /**

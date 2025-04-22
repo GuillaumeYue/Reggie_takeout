@@ -38,7 +38,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        log.info("Start static resource mapping...");
+        log.info("开始进行静态资源映射...");
         registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
         registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
     }
@@ -49,7 +49,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        log.info("Extending Message Converters...");
+        log.info("扩展消息转换器...");
         //创建消息转换器对象
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         //设置对象转换器，底层使用Jackson将Java对象转为json
