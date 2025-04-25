@@ -2,6 +2,7 @@ package com.finalPrj.reggie.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.finalPrj.reggie.common.BaseContext;
 import com.finalPrj.reggie.common.CustomException;
@@ -105,4 +106,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         //清空购物车数据
         shoppingCartService.remove(wrapper);
     }
+
+    @Override
+    public Page<Orders> getOrderPage(int page, int pageSize, String number, String beginTime, String endTime) {
+        Page<Orders> pageInfo = new Page<>(page, pageSize);
+
+        LambdaQueryWrapper<Orders> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(number != null, Orders::getNumber, number);
+        queryWrapper.ge(beginTime != null, Orders::getOrderTime, beginTime);
+        queryWrapper.le(endTime != null, Orders::getOrderTime, endTime);
+        queryWrapper.orderByDesc(Orders::getOrderTime);
+
+        this.page(pageInfo, queryWrapper);
+
+        return pageInfo;
+    }
+
 }
