@@ -212,9 +212,7 @@
         created() {
           this.init()
         },
-        mounted() {
-          // this.loading = false
-        },
+        mounted() {},
         methods: {
           async init () {
             getOrderDetailPage({ page: this.page, pageSize: this.pageSize, number: this.input || undefined, beginTime: this.beginTime || undefined, endTime: this.endTime || undefined }).then(res => {

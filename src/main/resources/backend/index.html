@@ -124,31 +124,31 @@
               //   children: [
                   {
                     id: '2',
-                    name: '员工管理',
+                    name: 'Employee',
                     url: 'page/member/list.html',
                     icon: 'icon-member'
                   },
                   {
                     id: '3',
-                    name: '分类管理',
+                    name: 'Category',
                     url: 'page/category/list.html',
                     icon: 'icon-category'
                   },
                   {
                     id: '4',
-                    name: '菜品管理',
+                    name: 'Dish',
                     url: 'page/food/list.html',
                     icon: 'icon-food'
                   },
                   {
                     id: '5',
-                    name: '套餐管理',
+                    name: 'Combo',
                     url: 'page/combo/list.html',
                     icon: 'icon-combo'
                   },
                   {
                     id: '6',
-                    name: '订单明细',
+                    name: 'Order',
                     url: 'page/order/list.html',
                     icon: 'icon-order'
                   }
@@ -156,7 +156,7 @@
               // },
             ],
             iframeUrl: 'page/member/list.html',
-            headTitle: '员工管理',
+            headTitle: 'Employee',
             goBackFlag: false,
             loading: true,
             timer: null
@@ -175,7 +175,13 @@
           clearTimeout(this.timer)
         },
         mounted() {
-          window.menuHandle = this.menuHandle
+          window.menuHandle = this.menuHandle;
+
+          const iframe = document.getElementById('cIframe');
+          iframe.addEventListener('load', () => {
+            console.log('iframe 加载完成，外部翻译开始');
+            window.translateIframePage('cIframe', 'en');
+          });
         },
         methods: {
           logout() {
@@ -194,13 +200,25 @@
             this.menuHandle(menu,false)
           },
           menuHandle(item, goBackFlag) {
-            this.loading = true
-            this.menuActived = item.id
-            this.iframeUrl = item.url
-            this.headTitle = item.name
-            this.goBackFlag = goBackFlag
-            this.closeLoading()
-          },
+            this.loading = true;
+            this.menuActived = item.id;
+            this.iframeUrl = item.url;
+            this.headTitle = item.name;
+            this.goBackFlag = goBackFlag;
+
+            this.$nextTick(() => {
+              const iframe = document.getElementById('cIframe');
+              iframe.addEventListener('load', () => {
+                // 页面加载完立即触发翻译
+                if (window.translateIframePage) {
+                  window.translateIframePage('cIframe', 'en');
+                }
+              }, { once: true }); // 👈 避免重复绑定
+            });
+
+            this.closeLoading();
+          }
+          ,
           closeLoading(){
             this.timer = null
             this.timer = setTimeout(()=>{
@@ -211,4 +229,7 @@
       })
     </script>
   </body>
+  <!-- 引入 Google Translate 脚本 -->
+  <script src="js/google_translate.js"></script>
+
 </html>

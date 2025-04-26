@@ -171,8 +171,7 @@
         created() {
           this.init()
         },
-        mounted() {
-        },
+        mounted() {},
         methods: {
           async init () {
             await getCategoryPage({'page': this.page, 'pageSize': this.pageSize}).then(res => {
@@ -299,36 +298,5 @@
         }
       })
     </script>
-  <!-- 1. 引入 Vue 和 Element UI -->
-  <script src="../../plugins/vue/vue.js"></script>
-  <script src="../../plugins/element-ui/index.js"></script>
-
-  <!-- 2. Element UI 多语言设置 -->
-  <script type="module">
-    import ELEMENT from '../../plugins/element-ui/index.js';
-    import lang from '../../plugins/element-ui/lang/en.js';
-
-    ELEMENT.locale(lang);
-  </script>
-
-  <!-- 3. 其他功能脚本 -->
-  <script src="../../plugins/axios/axios.min.js"></script>
-  <script src="../../js/request.js"></script>
-  <script src="../../api/category.js"></script>
-
-  <!-- 4. 引入 Google Translate 脚本 -->
-  <script src="../../js/google_translate.js"></script>
-  <script>
-    // 延迟执行翻译，确保 Element UI 渲染完成后再翻译内容
-    window.addEventListener('load', () => {
-      // 等一小会，确保页面上的所有组件都渲染完毕
-      setTimeout(() => {
-        translatePage('en');
-      }, 300);
-    });
-  </script>
-
-
-
 </body>
 </html>
