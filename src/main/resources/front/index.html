@@ -29,14 +29,14 @@
           <div class="divDesc">
             <div class="divName">菩提阁餐厅</div>
             <div class="divSend">
-                <span><img src="./images/time.png"/> 距离1.5km</span>
-                <span><img src="./images/money.png"/> 配送费6元</span>
-                <span><img src="./images/location.png"/> 预计时长12min</span>
+                <span><img src="./images/time.png"/> Distance1.5km</span>
+                <span><img src="./images/money.png"/> Delivery Fee $2.99</span>
+                <span><img src="./images/location.png"/> Estimate Delivery Time 12min</span>
             </div>
           </div>
         </div>
         <div class="divDesc">
-          简介: 菩提阁中餐厅是菩提阁点餐的独立的品牌，定位“大众 化的美食外送餐饮”，旨为顾客打造专业美食。
+          Introduction: Our Restaurant is an independent brand, positioned as "popular food delivery catering", aiming to create professional food for customers.
         </div>
       </div>
       <div class="divBody">
@@ -56,7 +56,7 @@
               <div>
                 <div class="divName">{{item.name}}</div>
                 <div class="divDesc">{{item.description}}</div>
-                <div class="divDesc">{{'月销' + (item.saleNum ? item.saleNum : 0)  }}</div>
+                <div class="divDesc">{{'Monthly Sales' + (item.saleNum ? item.saleNum : 0)  }}</div>
                 <div class="divBottom"><span>￥</span><span>{{item.price/100}}</span></div>
                 <div class="divNum">
                   <div class="divSubtract" v-if="item.number > 0">
@@ -86,7 +86,7 @@
               <span>{{goodsPrice}}</span>
           </div>
           <div class="divPrice"></div>
-          <div :class="{btnSubmitActive: cartData && cartData.length > 0, btnSubmit:!cartData || cartData.length<1}" @click="toAddOrderPage">去结算</div>
+          <div :class="{btnSubmitActive: cartData && cartData.length > 0, btnSubmit:!cartData || cartData.length<1}" @click="toAddOrderPage">Checkout</div>
         </div>
         <van-dialog v-model="dialogFlavor.show" :show-confirm-button="false" class="dialogFlavor" ref="flavorDialog">
           <div class="dialogTitle">{{dialogFlavor.name}}</div>
@@ -102,7 +102,7 @@
           </div>
           <div class="divBottom">
             <div><span class="spanMoney">￥</span>{{dialogFlavor.price/100}}</div>
-            <div @click="dialogFlavorAddCart">加入购物车</div>
+            <div @click="dialogFlavorAddCart">Add to Shopping Cart</div>
           </div>
           <div class="divFlavorClose" @click="dialogFlavor.show = false">
             <img src="./images/close.png"/>
@@ -110,9 +110,9 @@
         </van-dialog>
         <van-popup v-model="cartDialogShow" position="bottom" :style="{ height: '50%' }" class="dialogCart">
           <div class="divCartTitle">
-            <div class="title">购物车</div>
+            <div class="title">Shopping Cart</div>
             <div class="clear" @click="clearCart">
-              <i class="el-icon-delete"></i> 清空
+              <i class="el-icon-delete"></i> Clear
             </div>
           </div>
           <div class="divCartContent">

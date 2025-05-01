@@ -102,4 +102,12 @@ public class AddressBookController {
         //SQL:select * from address_book where user_id = ? order by update_time desc
         return R.success(addressBookService.list(queryWrapper));
     }
+
+    @PutMapping
+    public R<String> update(@RequestBody AddressBook addressBook) {
+        log.info("修改地址：{}", addressBook);
+        addressBookService.updateById(addressBook);
+        return R.success("地址修改成功");
+    }
+
 }
